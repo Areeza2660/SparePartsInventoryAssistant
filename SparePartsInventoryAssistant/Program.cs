@@ -1,88 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 
 class Program
 {
     static void Main()
     {
-        var inventory = GetInventory();
+        Console.WriteLine("Hej. Welcome to the spare parts inventory!");
+        Console.WriteLine("Which part do you need?");
 
-        Console.WriteLine("Welcome to our spare parts inventory system.");
-        Console.WriteLine("Type the name of the part you are looking for.");
-
-        bool partFound = false;
-        while (!partFound)
+        while (true)
         {
-            Console.Write("> ");
-            string userInput = Console.ReadLine()?.Trim();
-
-            if (string.IsNullOrWhiteSpace(userInput))
+            string part = Console.ReadLine().ToLower();
+            
+            if (part == "do you actually have any parts?")
             {
-                Console.WriteLine("Input was empty. Please enter a part name.");
+                Console.WriteLine("We have 3 part(s):");
+                Console.WriteLine("hydraulic pump");
+                Console.WriteLine("plc module");
+                Console.WriteLine("servo motor");
             }
-            else if (IsGeneralStockQuestion(userInput))
+            else if (part == "is there anything in stock at all?")
             {
-                PrintInventory(inventory);
+                Console.WriteLine("We have 3 part(s):");
+                Console.WriteLine("hydraulic pump");
+                Console.WriteLine("plc module");
+                Console.WriteLine("servo motor");
+            }
+            else if (part == "hydraulic pump")
+            {
+                Console.WriteLine("I have got hydraulic pump here for you. Bye.");
+                break;
+            }
+            else if (part == "plc module")
+            {
+                Console.WriteLine("I have got plc module here for you. Bye.");
+                break;
+            }
+            else if (part == "servo motor")
+            {
+                Console.WriteLine("I have got servo motor here for you. Bye.");
+                break;
             }
             else
             {
-                string match = FindPart(inventory, userInput);
-
-                if (match != null)
-                {
-                    Console.WriteLine("The part \"" + match + "\" is available.");
-                    partFound = true;
-                }
-                else
-                {
-                    Console.WriteLine("That part is not available in our inventory.");
-                }
+                Console.WriteLine("I am afraid we don't have any " + part + " in the inventory.");
+                Console.WriteLine("Which part do you need?");
             }
         }
-
-        Console.WriteLine("Thank you for using the inventory system.");
-    }
-
-    static Dictionary<string, string> GetInventory()
-    {
-        return new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-        {
-            { "hydraulic pump", "Hydraulic pump" },
-            { "PLC module", "PLC module" },
-            { "servo motor", "Servo motor" }
-        };
-    }
-
-    static bool IsGeneralStockQuestion(string input)
-    {
-        var generalQuestions = new List<string>
-        {
-            "Do you actually have any parts?",
-            "Is there anything in stock at all?"
-        };
-
-        return generalQuestions.Exists(q => string.Equals(q, input, StringComparison.OrdinalIgnoreCase));
-    }
-
-    static void PrintInventory(Dictionary<string, string> inventory)
-    {
-        Console.WriteLine("Current inventory (" + inventory.Count + " items):");
-        foreach (var item in inventory)
-        {
-            Console.WriteLine("- " + item.Value);
-        }
-    }
-
-    static string FindPart(Dictionary<string, string> inventory, string userInput)
-    {
-        foreach (var entry in inventory)
-        {
-            if (entry.Key.Equals(userInput, StringComparison.OrdinalIgnoreCase))
-            {
-                return entry.Value;
-            }
-        }
-
-        return null;
     }
 }
